@@ -5,36 +5,46 @@ import dev.syster42.framework.utils.FileAPI;
 
 public class LogHandler {
 
-    private static final ConsoleHandler consoleHandler = new ConsoleHandler();
-
-    public static ConsoleHandler getConsoleHandler() {
-        return consoleHandler;
-    }
-
     FileAPI logfile = new FileAPI("logs\\latest.log");
     FileAPI logDirectory = new FileAPI(null);
     private final boolean allowLogging;
+    ConsoleHandler ch;
 
-
-    public LogHandler(){
+    public LogHandler(ConsoleHandler consoleHandler){
         this.allowLogging = true;
         logDirectory = new FileAPI("logs\\");
+        this.ch = consoleHandler;
     }
 
-    public LogHandler(boolean allowLogging){
+    public LogHandler(ConsoleHandler consoleHandler, boolean allowLogging){
+        this.ch = consoleHandler;
         this.allowLogging = allowLogging;
         if(allowLogging){
             logDirectory = new FileAPI("logs\\");
         }
     }
-    public LogHandler(boolean allowLogging, String pathLoggingFiles){
+    public LogHandler(ConsoleHandler consoleHandler, boolean allowLogging, String pathLoggingFiles){
+        this.ch = consoleHandler;
         this.allowLogging = allowLogging;
         if(allowLogging){
             logDirectory = new FileAPI(pathLoggingFiles);
         }
     }
 
+    public ConsoleHandler getCh() {
+        return ch;
+    }
+
+    public boolean isAllowLogging() {
+        return allowLogging;
+    }
+
     public void startLogging(){
+        if(ch.getInfo() != null ||ch.getWarning() != null ||ch.getError() != null){
+            System.err.println("ERROR 1");
+            System.err.println("Bitte belege die Prefixe noch mit Zeichenketten. Nutze hierfür den in der Main erstellten Consolehandler mit den Methoden setInfo, setWarning und setError. ");
+            System.exit(3);
+        }
         if(isAllowLogging()){
             if(logfile.exists()){
                 logfile.renameFile(Framework.getServerAPI().getTimeForFiles() + ".log");
@@ -49,30 +59,24 @@ public class LogHandler {
     }
 
     public void logInfo(String logMessage){
-        getConsoleHandler().setInfo("[INFO] ");
-        System.out.println(getConsoleHandler().getInfo() + logMessage);
+        System.out.println(this.getCh().getInfo() + logMessage);
         if(isAllowLogging()){
-            logfile.writeInNextFreeLine(getConsoleHandler().getInfo() + logMessage);
+            logfile.writeInNextFreeLine(this.getCh().getInfo() + logMessage);
         }
     }
 
     public void logWarn(String logMessage){
-        getConsoleHandler().setWarning("[WARN] ");
-        System.out.println(getConsoleHandler().getWarning() + logMessage);
+        System.out.println(this.getCh().getWarning() + logMessage);
         if(isAllowLogging()){
-            logfile.writeInNextFreeLine(getConsoleHandler().getWarning() + logMessage);
+            logfile.writeInNextFreeLine(this.getCh().getWarning() + logMessage);
         }
     }
 
     public void logError(String logMessage){
-        getConsoleHandler().setInfo("[ERROR] ");
-        logfile.writeInNextFreeLine(getConsoleHandler().getError() + logMessage);
+        logfile.writeInNextFreeLine(this.getCh().getError() + logMessage);
         if(isAllowLogging()){
-            logfile.writeInNextFreeLine(getConsoleHandler().getError() + logMessage);
+            logfile.writeInNextFreeLine(this.getCh().getError() + logMessage);
         }
     }
 
-    public boolean isAllowLogging() {
-        return allowLogging;
-    }
 }
