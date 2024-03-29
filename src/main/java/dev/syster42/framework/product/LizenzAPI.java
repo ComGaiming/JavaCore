@@ -1,12 +1,21 @@
-package dev.syster42.framework.api;
+package dev.syster42.framework.product;
+
+import dev.syster42.framework.utils.FileAPI;
 
 public class LizenzAPI {
 
     String licencekey;
+    FileAPI fileapi = new FileAPI("licenekeys.txt");
 
-    public LizenzAPI(){}
+    public LizenzAPI(String savetype){
+        if(savetype.equals("file")){
+            if(!fileapi.exists()){
+                fileapi.createFile();
+            }
+        }
+    }
 
-    public void createKey(int lengthKey, int sign, String smallLetters, String bigLetters, String specialssigns){
+    public String createKey(int lengthKey, int sign, String smallLetters, String bigLetters, String specialssigns, String product){
         String[] key = new String[lengthKey];
         String whole = smallLetters.toLowerCase() + bigLetters.toUpperCase() + specialssigns;
         this.setLicencekey("");
@@ -27,6 +36,7 @@ public class LizenzAPI {
             this.licencekey = this.licencekey + key[i];
             System.out.print(key[i]);
         }
+        return licencekey;
     }
 
     public void setLicencekey(String licencekey) {
@@ -40,5 +50,9 @@ public class LizenzAPI {
     public void changeLicenceKey(){}
 
     public void deleteLicenceKey(){}
+
+    public void saveLicenceKey(String product, String licencekey){
+        fileapi.writeInNextFreeLine(product + ": " + licencekey);
+    }
 
 }

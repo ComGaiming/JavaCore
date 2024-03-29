@@ -192,13 +192,6 @@ public class ServerAPI {
         return sdf.format(new Date());
     }
 
-    public void generateWindowsRestartScript(String nameOfFinalJar, short maxRam){
-        FileAPI startbat = new FileAPI("start.bat");
-        startbat.writeInNextFreeLine("@echo off");
-        startbat.writeInNextFreeLine("java -Xmx" + maxRam + "G -Xms" + maxRam + "G -jar " + nameOfFinalJar + " nogui");
-        startbat.writeInNextFreeLine("PAUSE");
-    }
-
     public void generateWindowsRestartScript(String nameOfFinalJar){
         FileAPI startbat = new FileAPI("start.bat");
         startbat.writeInNextFreeLine("@echo off");
@@ -206,28 +199,11 @@ public class ServerAPI {
         startbat.writeInNextFreeLine("PAUSE");
     }
 
-    public void generateLinuxRestartScript(String nameOfScreen, String nameOfFinalJar, short maxRam) {
-        FileAPI startsh = new FileAPI("start.sh");
-        startsh.writeInNextFreeLine("#!/bin/bash");
-        startsh.writeInNextFreeLine("");
-        startsh.writeInNextFreeLine("BINDIR=$(dirname \"$(readlink -fn \"$0\")\")");
-        startsh.writeInNextFreeLine("cd \"$BINDIR\"");
-        startsh.writeInNextFreeLine("");
-        startsh.writeInNextFreeLine("screen -S \"" + nameOfScreen + "\" bash -c \"sh ./loop.sh\"");
-
-        FileAPI loopsh = new FileAPI("loop.sh");
-        loopsh.writeInNextFreeLine("while true");
-        loopsh.writeInNextFreeLine("do");
-        loopsh.writeInNextFreeLine("\tjava -Xms" + maxRam + "G -Xmx" + maxRam + "G -jar " + nameOfFinalJar);
-        loopsh.writeInNextFreeLine("\techo 'If you don't like to restart this server, you can make STRG + C");
-        loopsh.writeInNextFreeLine("\techo \"Rebooting in:\"");
-        loopsh.writeInNextFreeLine("\tfor i in 5 4 3 2 1");
-        loopsh.writeInNextFreeLine("\tdo");
-        loopsh.writeInNextFreeLine("\t\techo \"$i...\"");
-        loopsh.writeInNextFreeLine("\t\tsleep 1");
-        loopsh.writeInNextFreeLine("\tdone");
-        loopsh.writeInNextFreeLine("\techo \"Serverrestart\"");
-        loopsh.writeInNextFreeLine("done");
+    public void generateWindowsRestartScript(String nameOfFinalJar, short maxRam){
+        FileAPI startbat = new FileAPI("start.bat");
+        startbat.writeInNextFreeLine("@echo off");
+        startbat.writeInNextFreeLine("java -Xmx" + maxRam + "G -Xms" + maxRam + "G -jar " + nameOfFinalJar + " nogui");
+        startbat.writeInNextFreeLine("PAUSE");
     }
 
     public void generateLinuxRestartScript(String nameOfScreen, String nameOfFinalJar) {
@@ -254,6 +230,30 @@ public class ServerAPI {
         loopsh.writeInNextFreeLine("done");
     }
 
+    public void generateLinuxRestartScript(String nameOfScreen, String nameOfFinalJar, short maxRam) {
+        FileAPI startsh = new FileAPI("start.sh");
+        startsh.writeInNextFreeLine("#!/bin/bash");
+        startsh.writeInNextFreeLine("");
+        startsh.writeInNextFreeLine("BINDIR=$(dirname \"$(readlink -fn \"$0\")\")");
+        startsh.writeInNextFreeLine("cd \"$BINDIR\"");
+        startsh.writeInNextFreeLine("");
+        startsh.writeInNextFreeLine("screen -S \"" + nameOfScreen + "\" bash -c \"sh ./loop.sh\"");
+
+        FileAPI loopsh = new FileAPI("loop.sh");
+        loopsh.writeInNextFreeLine("while true");
+        loopsh.writeInNextFreeLine("do");
+        loopsh.writeInNextFreeLine("\tjava -Xms" + maxRam + "G -Xmx" + maxRam + "G -jar " + nameOfFinalJar);
+        loopsh.writeInNextFreeLine("\techo 'If you don't like to restart this server, you can make STRG + C");
+        loopsh.writeInNextFreeLine("\techo \"Rebooting in:\"");
+        loopsh.writeInNextFreeLine("\tfor i in 5 4 3 2 1");
+        loopsh.writeInNextFreeLine("\tdo");
+        loopsh.writeInNextFreeLine("\t\techo \"$i...\"");
+        loopsh.writeInNextFreeLine("\t\tsleep 1");
+        loopsh.writeInNextFreeLine("\tdone");
+        loopsh.writeInNextFreeLine("\techo \"Serverrestart\"");
+        loopsh.writeInNextFreeLine("done");
+    }
+
     public static double generateRandom(double min, double max){
         if(max>min)
             return Math.floor((Math.random()*max)+min);
@@ -262,4 +262,5 @@ public class ServerAPI {
         else
             return 0;
     }
+
 }
