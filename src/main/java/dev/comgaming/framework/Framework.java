@@ -1,10 +1,8 @@
-package dev.syster42.framework;
+package dev.comgaming.framework;
 
-import dev.syster42.framework.api.ServerAPI;
-import dev.syster42.framework.serverhandler.ConsoleHandler;
-import dev.syster42.framework.serverhandler.LogHandler;
-
-import javax.swing.*;
+import dev.comgaming.framework.serverhandler.ConsoleHandler;
+import dev.comgaming.framework.serverhandler.LogHandler;
+import dev.comgaming.framework.api.ServerAPI;
 
 public class Framework {
 
