@@ -1,6 +1,6 @@
 package dev.comgaming.framework.serverhandler;
 
-import de.comgaming.backend.utils.FileManager;
+import dev.comgaming.framework.utils.FileManager;
 import lombok.Getter;
 
 import java.text.SimpleDateFormat;
@@ -15,7 +15,7 @@ public class LogHandler {
     private final boolean allowLogging;
     ConsoleHandler ch = new ConsoleHandler();
 
-    public LogHandler(){
+    public LogHandler(ConsoleHandler consoleHandler){
         this.allowLogging = true;
         logDirectory = new FileManager("logs");
         this.ch.setInfo("[INFO]");

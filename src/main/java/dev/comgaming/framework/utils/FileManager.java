@@ -1,6 +1,7 @@
 package dev.comgaming.framework.utils;
 
 import de.comgaming.backend.Main;
+import dev.comgaming.framework.Framework;
 import lombok.Getter;
 
 import java.io.File;
@@ -24,14 +25,14 @@ public class FileManager {
 
     public void createFile() {
         try {
-            Main.getLogger().logInfo(String.valueOf(this.file.createNewFile()));
+            Framework.getLogHandler().logInfo(String.valueOf(this.file.createNewFile()));
         } catch (IOException e) {
-            Main.getLogger().logWarn(String.valueOf(new RuntimeException(e)));
+            Framework.getLogHandler().logWarn(String.valueOf(new RuntimeException(e)));
         }
     }
 
     public void renameFile(String newName) {
-        Main.getLogger().logInfo(String.valueOf(this.file.renameTo(new File(newName))));
+        Framework.getLogHandler().logInfo(String.valueOf(this.file.renameTo(new File(newName))));
     }
 
     public void writeInNextFreeLine(String text) {
@@ -40,7 +41,7 @@ public class FileManager {
             writer.write(text + "\n");
             writer.close();
         } catch (IOException e) {
-            Main.getLogger().logWarn(String.valueOf(new RuntimeException(e)));
+            Framework.getLogHandler().logWarn(String.valueOf(new RuntimeException(e)));
         }
     }
 
@@ -53,7 +54,7 @@ public class FileManager {
             }
             scn.close();
         } catch (IOException e) {
-            Main.getLogger().logWarn(String.valueOf(new RuntimeException(e)));
+            Framework.getLogHandler().logWarn(String.valueOf(new RuntimeException(e)));
         }
         return lines;
     }

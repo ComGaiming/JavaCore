@@ -1,6 +1,6 @@
 package dev.comgaming.framework.utils;
 
-import de.comgaming.backend.Main;
+import dev.comgaming.framework.Framework;
 import lombok.Getter;
 
 import java.sql.Connection;
@@ -60,9 +60,9 @@ public class DatabaseManager {
         try {
             Class.forName(driver);
             c=DriverManager.getConnection(url, getDatabaseUsername(), getDatabasePassword());
-            Main.getLogger().logInfo("Connected to Database " + this.getDatabase() + "!");
+            Framework.getLogHandler().logInfo("Connected to Database " + this.getDatabase() + "!");
         } catch (Exception e) {
-            Main.getLogger().logError(e.getClass().getName() + ": " + e.getMessage());
+            Framework.getLogHandler().logError(e.getClass().getName() + ": " + e.getMessage());
             System.exit(3);
         }
     }
@@ -73,7 +73,7 @@ public class DatabaseManager {
                 connect();
             }
         } catch (SQLException e) {
-            Main.getLogger().logError(e.getClass().getName() + ": " + e.getMessage());
+            Framework.getLogHandler().logError(e.getClass().getName() + ": " + e.getMessage());
         }
         return c;
     }
@@ -83,9 +83,9 @@ public class DatabaseManager {
             if(c!= null){
                 c.close();
             }
-            Main.getLogger().logInfo("Disconnected from Database " + this.getDatabase() + "!");
+            Framework.getLogHandler().logInfo("Disconnected from Database " + this.getDatabase() + "!");
         } catch (SQLException e) {
-            Main.getLogger().logError(e.getClass().getName() + ": " + e.getMessage());
+            Framework.getLogHandler().logError(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 

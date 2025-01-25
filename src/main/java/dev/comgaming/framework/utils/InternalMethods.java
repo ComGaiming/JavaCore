@@ -1,6 +1,6 @@
 package dev.comgaming.framework.utils;
 
-import de.comgaming.backend.Main;
+import dev.comgaming.framework.Framework;
 import lombok.Getter;
 
 import java.io.File;
@@ -35,7 +35,7 @@ public class InternalMethods {
         try {
             return InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
-            Main.getLogger().logError(String.valueOf(new UnknownHostException()));
+            Framework.getLogHandler().logError(String.valueOf(new UnknownHostException()));
             return null;
         }
     }
@@ -47,7 +47,7 @@ public class InternalMethods {
                 return ni.getDisplayName();
             }
         } catch (SocketException | UnknownHostException e) {
-            Main.getLogger().logError(String.valueOf(new UnknownHostException()));
+            Framework.getLogHandler().logError(String.valueOf(new UnknownHostException()));
         }
         return null;
     }
@@ -56,7 +56,7 @@ public class InternalMethods {
         try {
             return InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
-            Main.getLogger().logError(String.valueOf(new UnknownHostException()));
+            Framework.getLogHandler().logError(String.valueOf(new UnknownHostException()));
             return null;
         }
     }
@@ -134,10 +134,10 @@ public class InternalMethods {
     public static void toggleMaintenance(){
         if(maintenance){
             maintenance = false;
-            Main.getLogger().logInfo("Maintenance is now disabled.");
+            Framework.getLogHandler().logInfo("Maintenance is now disabled.");
         }else{
             maintenance = true;
-            Main.getLogger().logInfo("Maintenance is now enabled.");
+            Framework.getLogHandler().logInfo("Maintenance is now enabled.");
         }
     }
 
@@ -150,7 +150,7 @@ public class InternalMethods {
             startsh.writeInNextFreeLine("cd \"$BINDIR\"");
             startsh.writeInNextFreeLine("");
             startsh.writeInNextFreeLine("screen -S " + nameOfFinalJar+".jar bash -c \"sh ./loop.sh\"");
-            Main.getLogger().logInfo(startsh.getFile().getName() + " created");
+            Framework.getLogHandler().logInfo(startsh.getFile().getName() + " created");
         }
 
         FileManager loopsh = new FileManager("loop.sh");
@@ -167,7 +167,7 @@ public class InternalMethods {
             loopsh.writeInNextFreeLine("\tdone");
             loopsh.writeInNextFreeLine("\techo \"Serverrestart\"");
             loopsh.writeInNextFreeLine("done");
-            Main.getLogger().logInfo(loopsh.getFile().getName() + " created");
+            Framework.getLogHandler().logInfo(loopsh.getFile().getName() + " created");
         }
 
     }
