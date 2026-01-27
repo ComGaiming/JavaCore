@@ -1,6 +1,5 @@
-package dev.comgaming.framework.utils;
+package dev.comgaming.framework.utils.filemanager;
 
-import de.comgaming.backend.Main;
 import dev.comgaming.framework.Framework;
 import lombok.Getter;
 
@@ -10,13 +9,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-@Getter
 public class FileManager {
 
     private final File file;
+    @Getter
+    public static int numberOfFileManagers= 0;
 
     public FileManager(String filePath) {
         file = new File(filePath);
+        numberOfFileManagers++;
     }
 
     public boolean exists() {
@@ -25,14 +26,14 @@ public class FileManager {
 
     public void createFile() {
         try {
-            Framework.getLogHandler().logInfo(String.valueOf(this.file.createNewFile()));
+            Framework.getLogger().info("file", String.valueOf(this.file.createNewFile()));
         } catch (IOException e) {
-            Framework.getLogHandler().logWarn(String.valueOf(new RuntimeException(e)));
+            Framework.getLogger().warn("ioexception",String.valueOf(new RuntimeException(e)));
         }
     }
 
     public void renameFile(String newName) {
-        Framework.getLogHandler().logInfo(String.valueOf(this.file.renameTo(new File(newName))));
+        Framework.getLogger().info("file",String.valueOf(this.file.renameTo(new File(newName))));
     }
 
     public void writeInNextFreeLine(String text) {
@@ -41,7 +42,7 @@ public class FileManager {
             writer.write(text + "\n");
             writer.close();
         } catch (IOException e) {
-            Framework.getLogHandler().logWarn(String.valueOf(new RuntimeException(e)));
+            Framework.getLogger().warn("ioexception",String.valueOf(new RuntimeException(e)));
         }
     }
 
@@ -54,9 +55,8 @@ public class FileManager {
             }
             scn.close();
         } catch (IOException e) {
-            Framework.getLogHandler().logWarn(String.valueOf(new RuntimeException(e)));
+            Framework.getLogger().warn("ioexception",String.valueOf(new RuntimeException(e)));
         }
         return lines;
     }
-
 }

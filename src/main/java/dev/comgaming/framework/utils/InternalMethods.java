@@ -1,6 +1,7 @@
 package dev.comgaming.framework.utils;
 
 import dev.comgaming.framework.Framework;
+import dev.comgaming.framework.utils.filemanager.FileManager;
 import lombok.Getter;
 
 import java.io.File;
@@ -31,11 +32,15 @@ public class InternalMethods {
         return System.getProperty("os.version").toLowerCase();
     }
 
+    public static String getCurrentUser(){
+        return System.getProperty("user.name");
+    }
+
     public static String getOwnerHostName() {
         try {
             return InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
-            Framework.getLogHandler().logError(String.valueOf(new UnknownHostException()));
+            Framework.getLogger().error("internalmethods",String.valueOf(new UnknownHostException()));
             return null;
         }
     }
@@ -47,7 +52,7 @@ public class InternalMethods {
                 return ni.getDisplayName();
             }
         } catch (SocketException | UnknownHostException e) {
-            Framework.getLogHandler().logError(String.valueOf(new UnknownHostException()));
+            Framework.getLogger().error("internalmethods",String.valueOf(new UnknownHostException()));
         }
         return null;
     }
@@ -56,7 +61,7 @@ public class InternalMethods {
         try {
             return InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
-            Framework.getLogHandler().logError(String.valueOf(new UnknownHostException()));
+            Framework.getLogger().error("internalmethods",String.valueOf(new UnknownHostException()));
             return null;
         }
     }
@@ -131,13 +136,13 @@ public class InternalMethods {
         return password.toString();
     }
 
-    public static void toggleMaintenance(){
+    public static void toggleMaintenance(String source){
         if(maintenance){
             maintenance = false;
-            Framework.getLogHandler().logInfo("Maintenance is now disabled.");
+            Framework.getLogger().info(source,"Maintenance is now disabled.");
         }else{
             maintenance = true;
-            Framework.getLogHandler().logInfo("Maintenance is now enabled.");
+            Framework.getLogger().info(source,"Maintenance is now enabled.");
         }
     }
 
@@ -150,7 +155,7 @@ public class InternalMethods {
             startsh.writeInNextFreeLine("cd \"$BINDIR\"");
             startsh.writeInNextFreeLine("");
             startsh.writeInNextFreeLine("screen -S " + nameOfFinalJar+".jar bash -c \"sh ./loop.sh\"");
-            Framework.getLogHandler().logInfo(startsh.getFile().getName() + " created");
+            Framework.getLogger().info("core","start.sh created");
         }
 
         FileManager loopsh = new FileManager("loop.sh");
@@ -167,7 +172,7 @@ public class InternalMethods {
             loopsh.writeInNextFreeLine("\tdone");
             loopsh.writeInNextFreeLine("\techo \"Serverrestart\"");
             loopsh.writeInNextFreeLine("done");
-            Framework.getLogHandler().logInfo(loopsh.getFile().getName() + " created");
+            Framework.getLogger().info("core","loop.sh created");
         }
 
     }
