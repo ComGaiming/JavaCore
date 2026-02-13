@@ -9,6 +9,11 @@ public class DirectoryHandler {
 
     String USERPATH = "\\home\\" + InternalMethods.getCurrentUser() + "\\";
     private final String ROOTPATH = "\\";
+
+    /*
+        TODO:
+        chg: backend to programmname
+     */
     private final String PROGRAMMPATH = "\\home\\backend\\";
     @Setter
     private String path = "";

@@ -5,31 +5,41 @@ import dev.comgaming.framework.serverhandler.LogHandler;
 import dev.comgaming.framework.serverhandler.Logger;
 import dev.comgaming.framework.serverhandler.LogLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class Framework {
 
-    private static final ConsoleHandler consoleHandler = new ConsoleHandler();
-    private static final LogHandler logHandler = new LogHandler(consoleHandler);
+    private static ConsoleHandler consoleHandler;
+    private static LogHandler logHandler;
+    private static Logger logger;
 
     @Getter
     private static boolean started = false;
 
-    private static final Logger LOG =
-            new Logger(logHandler);
-
     public void init() {
-        logHandler.setMinimumLevel(LogLevel.INFO);
-        logHandler.setAllowLogging(true);
+        if (started) return;
 
         started = true;
 
-        LOG.info("core", "Framework initialisiert");
+
+        consoleHandler = new ConsoleHandler();
+        logHandler = new LogHandler(consoleHandler);
+
+        logHandler.setMinimumLevel(LogLevel.INFO);
+        logHandler.setAllowLogging(true);
+
+        logger = new Logger(logHandler);
+
+
+        logger.info("core", "Framework initialisiert");
     }
 
     public static Logger getLogger() {
-        return new Logger(logHandler);
+        if (!started) {
+            throw new IllegalStateException(
+                    "Framework not initialized. Call Framework.init() first."
+            );
+        }
+        return logger;
     }
 }

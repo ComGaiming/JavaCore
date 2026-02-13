@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class FileManager {
 
+    @Getter
     private final File file;
     @Getter
     public static int numberOfFileManagers= 0;
@@ -33,7 +34,12 @@ public class FileManager {
     }
 
     public void renameFile(String newName) {
-        Framework.getLogger().info("file",String.valueOf(this.file.renameTo(new File(newName))));
+        if (this.file != null) {
+            boolean success = this.file.renameTo(new File(newName));
+            System.out.println("[BOOTSTRAP][FILE] rename=" + success);
+        } else {
+            System.err.println("[BOOTSTRAP][FILE] rename failed: " + newName);
+        }
     }
 
     public void writeInNextFreeLine(String text) {

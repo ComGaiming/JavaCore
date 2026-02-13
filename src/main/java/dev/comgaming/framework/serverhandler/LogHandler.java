@@ -3,6 +3,7 @@ package dev.comgaming.framework.serverhandler;
 import dev.comgaming.framework.Framework;
 import dev.comgaming.framework.utils.filemanager.DirectoryHandler;
 import dev.comgaming.framework.utils.filemanager.FileManager;
+import lombok.Setter;
 
 public class LogHandler {
 
@@ -10,7 +11,9 @@ public class LogHandler {
     private final FileManager logfile;
     private final DirectoryHandler directoryHandler;
 
+    @Setter
     private boolean allowLogging = true;
+    @Setter
     private LogLevel minimumLevel = LogLevel.INFO;
 
     public static int numberOfLogHandlers = 0;
@@ -25,6 +28,11 @@ public class LogHandler {
     }
 
     private void setupLogDirectory() {
+
+        /*
+        FIXME:
+        Logdirectory was not created
+         */
         String path = "logs\\";
         directoryHandler.setPath(path);
 
@@ -33,14 +41,6 @@ public class LogHandler {
         }
 
         logfile.renameFile(path + "latest.log");
-    }
-
-    public void setMinimumLevel(LogLevel level) {
-        this.minimumLevel = level;
-    }
-
-    public void setAllowLogging(boolean allowLogging) {
-        this.allowLogging = allowLogging;
     }
 
     public void log(LogLevel level, String source, String message) {
