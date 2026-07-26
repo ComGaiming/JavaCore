@@ -1,32 +1,21 @@
 package dev.comgaming.framework.serverhandler;
 
-import lombok.Setter;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-@Setter
 public class ConsoleHandler {
 
-    private String error;
-    private String warning;
-    private String info;
+    private static final DateTimeFormatter TIME_FORMAT =
+            DateTimeFormatter.ofPattern("[HH:mm:ss]");
 
-    public String getError(){
-        return getTimeForConsole() + this.error;
+    public String format(LogLevel level, String source, String message) {
+        return getTime()
+                + " [" + level + "]"
+                + " [Source: " + source + "] "
+                + message;
     }
 
-    public String getWarning() {
-        return getTimeForConsole() + this.warning;
+    private String getTime() {
+        return LocalTime.now().format(TIME_FORMAT);
     }
-
-    public String getInfo() {
-        return getTimeForConsole() + this.info;
-    }
-
-    public String getTimeForConsole() {
-        SimpleDateFormat sdf = new SimpleDateFormat("[HH:mm:ss] ");
-        return sdf.format(new Date());
-    }
-
 }
